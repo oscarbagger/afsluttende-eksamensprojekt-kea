@@ -3,8 +3,101 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="style.css" />
-    <title>Document</title>
+    <title>Læringsmateriale</title>
   </head>
-  <body></body>
+  <body>
+    <header>
+      <div id="logo">
+        <a href="https://dansktegneserieraad.dk/">
+          <img src="https://dansktegneserieraad.dk/wp-content/uploads/2019/02/cropped-dansk-tegneserieraad-logo-4.png" alt="Dansk Tegneserieråd"></img>
+         </a>
+      </div>
+    <h1>Læringsmateriale</h1>
+    <p></p>
+    <nav>
+      <a href="https://dansktegneserieraad.dk/">HJEM</a>
+      <a href="https://dansktegneserieraad.dk/bliv-medlem/">BLIV MEDLEM</a>
+      <a href="https://dansktegneserieraad.dk/category/nyheder/">NYHEDER</a>
+      <a href="https://dansktegneserieraad.dk/">UNDERVISNING</a>
+      <a href="https://dansktegneserieraad.dk/">HVIDBOG</a>
+      <a href="https://dansktegneserieraad.dk/">KONTAKT OG INFO</a>
+    </nav>
+    </header>
+<div id="arkiv">
+  <aside id="kategorier">
+    <h2>Fag</h2>
+    <div class="kategori_fag">
+      <div class="materiale_fag">
+        <p>Billedkunst</p>
+      </div>
+      <div class="materiale_fag">
+        <p>Dansk</p>
+      </div>
+      <div class="materiale_fag">
+        <p>Engelsk</p>
+      </div>
+      <div class="materiale_fag">
+        <p>Historie</p>
+      </div>
+      <div class="materiale_fag">
+        <p>Religion</p>
+      </div>
+      <div class="materiale_fag">
+        <input type="checkbox" id="fag_tysk" name="fag_tysk" value="Tysk">
+        <label for="fag_tysk">Tysk</label>
+      </div>
+    </div>
+    <h2>Niveau</h2>
+    <div class="kategori_niveau">
+      <div class="materiale_niveau">
+        <input type="checkbox" id="niveau_indskoling" name="niveau_indskoling" value="Indskoling">
+        <label for="niveau_indskoling">Indskoling</label>
+      </div>
+      <div class="materiale_niveau">
+        <input type="checkbox" id="niveau_mellemtrin" name="niveau_mellemtrin" value="Mellemtrin">
+        <label for="niveau_mellemtrin">Mellemtrin</label>
+      </div>
+      <div class="materiale_niveau">
+        <input type="checkbox" id="niveau_udskoling" name="niveau_udskoling" value="Udskoling">
+        <label for="niveau_udskoling">Udskoling</label>
+        <div class="materiale_niveau">
+          <input type="checkbox" id="niveau_gymnasie" name="niveau_gymnasie" value="Gymnasie">
+          <label for="niveau_gymnasie">Gymnasie</label>
+      </div>
+    </div>
+    <img class="arkiv_artwork" src="https://dansktegneserieraad.dk/wp-content/uploads/2019/02/illuforside-768x1366.png" alt=" Dansk Tegneserieråd artwork">
+  </aside>
+
+  <main>
+
+  </main>
+</div>
+
+
+    <template class="temp_materiale">
+      <article class="materiale">
+        <h2 class="materiale_titel"></h2>
+        <p class="materiale_beskrivelse"></p>
+        <a class="materiale_link" href=""></a>
+        <div class="materiale_fagliste"></div>
+      </article>
+    </template>
+    <template class="temp_materiale_fag">
+      <div class="materiale_fag">
+        <p></p>
+      </div>
+    </template>
+    <script src="archive.js"></script>
+  </body>
+  <footer>
+    <h3>Kontakt</h3>
+    <p>Dansk Tegneserieråd</p>
+    <p>Kong Georgsvej 12, 2. sal,</p>
+    <p>2000 Frederiksberg</p>
+    <p>Danmark</p>
+    <a href="mailto:info@dansktegneserieraad.dk">info@dansktegneserieraad.dk</a>
+  </footer>
 </html>

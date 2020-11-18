@@ -2,3 +2,105 @@
   margin: 0;
   padding: 0;
 }
+
+body {
+  scroll-behavior: smooth;
+  font-family: "Montserrat", sans-serif;
+  word-wrap: break-word;
+}
+
+img {
+  width: 100%;
+}
+
+h1,
+h2 {
+  text-align: center;
+  color: #333;
+}
+
+p {
+  color: #333;
+}
+
+a {
+  color: #e6007e;
+  text-decoration: none;
+}
+
+#logo {
+  max-width: 171px;
+}
+
+nav {
+  background-color: #ffed00;
+  text-align: center;
+  padding: 10px 0px 10px 0px;
+}
+
+nav a {
+  color: #333;
+}
+
+.kategori_fag {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.materiale {
+  border-bottom: 2px solid #333;
+  padding: 5px;
+}
+
+.materiale_fagliste {
+  display: flex;
+  flex-direction: row;
+}
+
+.materiale_fag {
+  padding: 2px 5px 2px 5px;
+  margin: 5px;
+  border: 1px solid #333;
+  border-radius: 5px;
+  text-align: center;
+  width: fit-content;
+}
+
+aside {
+  border-bottom: 2px solid #333;
+}
+
+.arkiv_artwork {
+  display: none;
+}
+
+footer {
+  background-color: #009fe3;
+}
+
+footer p,
+footer h3 {
+  color: white;
+}
+
+@media only screen and (min-width: 800px) {
+  #arkiv {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    border-right: 2px solid #333;
+    border-left: 2px solid #333;
+  }
+  aside {
+    border-right: 2px solid #333;
+  }
+  .arkiv_artwork {
+    display: block;
+  }
+  .materiale h2 {
+    text-align: left;
+  }
+}
