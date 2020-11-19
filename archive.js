@@ -2,16 +2,20 @@ window.addEventListener("DOMContentLoaded",start);
 
 let endPoint="https://oscarbagger.com/kea/afsluttende_eksamensprojekt/wordpress/wp-json/wp/v2/materiale";
 const listContent=document.querySelector("main");
-let materialeData=[];
-let materialer=[];
+let materialData=[];
+let materials=[];
+let activeMaterials=[];
 
 
 // templates
 const tempMat=document.querySelector(".temp_materiale");
 const tempSubject=document.querySelector(".temp_materiale_fag");
+const filterSubjectButtons=document.querySelectorAll(".kategori_fag div input");
+const filterNiveauButtons=document.querySelectorAll(".kategori_niveau div input");
 
 const settings = {
-    filter: [],
+    subjectFilter: [],
+    niveauFilter: [],
     sortBy: null,
     sortDir: "asc",
   };
@@ -27,18 +31,32 @@ const materialeObj= {
 function start()
 {
     fetchJson();
+
+    filterSubjectButtons.forEach((button) => {
+        button.addEventListener("click", function () {
+          updateFilter(this.value, settings.subjectFilter);
+          updateMaterialList();
+        });
+      });
+    filterNiveauButtons.forEach((button) => {
+        button.addEventListener("click", function () {
+          updateFilter(this.value, settings.niveauFilter);
+          updateMaterialList();
+        });
+      });
 }
 
 async function fetchJson() 
 {   
     const jsonData = await fetch(endPoint);
-    materialeData=await jsonData.json();
-    prepareObjects(materialeData);
+    materialData=await jsonData.json();
+    prepareObjects(materialData);
 }
 
 function prepareObjects(jsonData) {
-    materialer = jsonData.map(makeObject);
-    console.log(materialer);
+    materials = jsonData.map(makeObject);
+    console.log(materials);
+    activeMaterials=materials;
     makeMaterialList();
   }
 
@@ -56,18 +74,20 @@ function makeMaterialList()
     // empty the list
     listContent.innerHTML="";
     // make the individual elements
-    materialer.forEach(m => {
+    activeMaterials.forEach(m => {
         makeMaterialElement(m);
-    })
+    });
 }
 
 function makeMaterialElement(mat)
 {
+    // clone template
         let clone=tempMat.cloneNode(true).content;
+        // put the material info into the clone
         clone.querySelector(".materiale_titel").textContent=mat.titel;
         clone.querySelector(".materiale_beskrivelse").textContent=mat.beskrivelse;
         clone.querySelector(".materiale_link").textContent=mat.link;
-        // sort alphabetically
+        // sort materials subjects alphabetically
         mat.fag.sort();
         // 
         mat.fag.forEach(f => {
@@ -76,4 +96,58 @@ function makeMaterialElement(mat)
             clone.querySelector(".materiale_fagliste").appendChild(cloneSubject);
         })
     listContent.appendChild(clone);
+}
+
+function updateFilter(value, filtertype)
+{
+      // if filter is empty, add value to filter
+    if (filtertype.length == 0) {
+        filtertype.push(value);
+    }
+    // if value is already in filter, remove it
+    else if (filtertype.includes(value))
+    {
+        let i = filtertype.indexOf(value);
+        filtertype.splice(i, 1);
+    }
+    //if value is not in filter then add it
+    else {
+    filtertype.push(value);
+    }
+}
+
+function updateMaterialList()
+{
+    // refill list with all materials
+    activeMaterials=materials;
+    // filter out material from the active list
+    activeMaterials=activeMaterials.filter(subjectFilter);
+    activeMaterials=activeMaterials.filter(niveauFilter);
+    makeMaterialList();
+}
+
+function subjectFilter(mat)
+{
+    let matches = 0;
+    // how many filters it needs to match with
+    let matchesNeeded = settings.subjectFilter.length;
+    settings.subjectFilter.forEach(subject => {
+        if(mat.fag.includes(subject))
+        { matches++; } 
+    });
+    // if all values of the filter has matched with a value from student, return true
+    return (matches == matchesNeeded ?  true: false);
+}
+
+function niveauFilter(mat)
+{
+    let matches = 0;
+    // how many filters it needs to match with
+    let matchesNeeded = settings.niveauFilter.length;
+    settings.niveauFilter.forEach(n => {
+        if(mat.niveau.includes(n))
+        { matches++; } 
+    });
+    // if all values of the filter has matched with a value from student, return true
+    return (matches == matchesNeeded ?  true: false);
 }

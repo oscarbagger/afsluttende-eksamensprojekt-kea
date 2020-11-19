@@ -31,19 +31,24 @@
     <h2>Fag</h2>
     <div class="kategori_fag">
       <div class="materiale_fag">
-        <p>Billedkunst</p>
+        <input type="checkbox" id="fag_billedkunst" name="fag_billedkunst" value="Billedkunst">
+        <label for="fag_billedkunst">Billedkunst</label>
       </div>
       <div class="materiale_fag">
-        <p>Dansk</p>
+        <input type="checkbox" id="fag_dansk" name="fag_dansk" value="Dansk">
+        <label for="fag_dansk">Dansk</label>
       </div>
       <div class="materiale_fag">
-        <p>Engelsk</p>
+        <input type="checkbox" id="fag_engelsk" name="fag_engelsk" value="Engelsk">
+        <label for="fag_engelsk">Engelsk</label>
       </div>
       <div class="materiale_fag">
-        <p>Historie</p>
+        <input type="checkbox" id="fag_historie" name="fag_historie" value="Historie">
+        <label for="fag_historie">Historie</label>
       </div>
       <div class="materiale_fag">
-        <p>Religion</p>
+        <input type="checkbox" id="fag_religion" name="fag_religion" value="Religion">
+        <label for="fag_religion">Religion</label>
       </div>
       <div class="materiale_fag">
         <input type="checkbox" id="fag_tysk" name="fag_tysk" value="Tysk">
@@ -52,20 +57,20 @@
     </div>
     <h2>Niveau</h2>
     <div class="kategori_niveau">
-      <div class="materiale_niveau">
+      <div>
         <input type="checkbox" id="niveau_indskoling" name="niveau_indskoling" value="Indskoling">
         <label for="niveau_indskoling">Indskoling</label>
       </div>
-      <div class="materiale_niveau">
+      <div>
         <input type="checkbox" id="niveau_mellemtrin" name="niveau_mellemtrin" value="Mellemtrin">
         <label for="niveau_mellemtrin">Mellemtrin</label>
       </div>
-      <div class="materiale_niveau">
+      <div>
         <input type="checkbox" id="niveau_udskoling" name="niveau_udskoling" value="Udskoling">
         <label for="niveau_udskoling">Udskoling</label>
-        <div class="materiale_niveau">
-          <input type="checkbox" id="niveau_gymnasie" name="niveau_gymnasie" value="Gymnasie">
-          <label for="niveau_gymnasie">Gymnasie</label>
+      <div>
+        <input type="checkbox" id="niveau_gymnasie" name="niveau_gymnasie" value="Gymnasie">
+        <label for="niveau_gymnasie">Gymnasie</label>
       </div>
     </div>
     <img class="arkiv_artwork" src="https://dansktegneserieraad.dk/wp-content/uploads/2019/02/illuforside-768x1366.png" alt=" Dansk Tegneserieråd artwork">
@@ -93,11 +98,13 @@
     <script src="archive.js"></script>
   </body>
   <footer>
-    <h3>Kontakt</h3>
-    <p>Dansk Tegneserieråd</p>
-    <p>Kong Georgsvej 12, 2. sal,</p>
-    <p>2000 Frederiksberg</p>
-    <p>Danmark</p>
-    <a href="mailto:info@dansktegneserieraad.dk">info@dansktegneserieraad.dk</a>
+    <div>
+      <h3>Kontakt</h3>
+      <p>Dansk Tegneserieråd</p>
+      <p>Kong Georgsvej 12, 2. sal,</p>
+      <p>2000 Frederiksberg</p>
+      <p>Danmark</p>
+      <a href="mailto:info@dansktegneserieraad.dk">info@dansktegneserieraad.dk</a>
+    </div>
   </footer>
 </html>
