@@ -6,12 +6,15 @@ let materialData=[];
 let materials=[];
 let activeMaterials=[];
 
+// text in the searchbar
+let searchInput = "";
 
 // templates
 const tempMat=document.querySelector(".temp_materiale");
 const tempSubject=document.querySelector(".temp_materiale_fag");
 const filterSubjectButtons=document.querySelectorAll(".kategori_fag div input");
 const filterNiveauButtons=document.querySelectorAll(".kategori_niveau div input");
+const searchBar=document.querySelector("#searchBar input");
 
 const settings = {
     subjectFilter: [],
@@ -43,6 +46,10 @@ function start()
           updateFilter(this.value, settings.niveauFilter);
           updateMaterialList();
         });
+      });
+    searchBar.addEventListener("input", function () {
+        searchInput = searchBar.value.toLowerCase();
+        updateMaterialList();
       });
 }
 
@@ -123,7 +130,16 @@ function updateMaterialList()
     // filter out material from the active list
     activeMaterials=activeMaterials.filter(subjectFilter);
     activeMaterials=activeMaterials.filter(niveauFilter);
+    activeMaterials=activeMaterials.filter(searchFilter);
     makeMaterialList();
+}
+
+function searchFilter(mat)
+{
+    let searchCriteria = mat.titel.toLowerCase()+mat.beskrivelse.toLowerCase();
+    if (searchCriteria.includes(searchInput)) {
+      return true;
+    } else return false;
 }
 
 function subjectFilter(mat)
