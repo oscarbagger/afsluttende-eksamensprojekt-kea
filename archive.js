@@ -1,10 +1,12 @@
 window.addEventListener("DOMContentLoaded",start);
 
 let endPoint="https://oscarbagger.com/kea/afsluttende_eksamensprojekt/wordpress/wp-json/wp/v2/materiale";
-const listContent=document.querySelector("main");
+const listContent=document.querySelector("#arkiv_liste");
 let materialData=[];
 let materials=[];
 let activeMaterials=[];
+
+let uniqueSubjects=[];
 
 // text in the searchbar
 let searchInput = "";
@@ -65,15 +67,29 @@ function prepareObjects(jsonData) {
     console.log(materials);
     activeMaterials=materials;
     makeMaterialList();
+    generateMaterialInfo();
   }
 
 function makeObject(jsonObject) {
     let mat = Object.create(materialeObj);
     mat.titel=jsonObject.title.rendered;
     mat.beskrivelse=jsonObject.beskrivelse;
+    mat.link=jsonObject.link;
     mat.fag=jsonObject.fag;
     mat.niveau=jsonObject.niveau;
     return mat;
+}
+
+function generateMaterialInfo()
+{
+    // get all unique subjects
+    activeMaterials.forEach(mat=> {
+        mat.fag.forEach(f => {
+            if(!uniqueSubjects.includes(f))
+            {uniqueSubjects.push(f);}
+        });
+    });
+    console.log(uniqueSubjects);
 }
 
 function makeMaterialList()
@@ -84,6 +100,7 @@ function makeMaterialList()
     activeMaterials.forEach(m => {
         makeMaterialElement(m);
     });
+    updateArchiveInfo();
 }
 
 function makeMaterialElement(mat)
@@ -93,11 +110,16 @@ function makeMaterialElement(mat)
         // put the material info into the clone
         clone.querySelector(".materiale_titel").textContent=mat.titel;
         clone.querySelector(".materiale_beskrivelse").textContent=mat.beskrivelse;
-        clone.querySelector(".materiale_link").textContent=mat.link;
+        clone.querySelector(".materiale_link").href=mat.link;
         // sort materials subjects alphabetically
         mat.fag.sort();
         // 
         mat.fag.forEach(f => {
+            let cloneSubject=tempSubject.cloneNode(true).content;
+            cloneSubject.querySelector("p").textContent=f;
+            clone.querySelector(".materiale_fagliste").appendChild(cloneSubject);
+        })
+        mat.niveau.forEach(f => {
             let cloneSubject=tempSubject.cloneNode(true).content;
             cloneSubject.querySelector("p").textContent=f;
             clone.querySelector(".materiale_fagliste").appendChild(cloneSubject);
@@ -132,6 +154,7 @@ function updateMaterialList()
     activeMaterials=activeMaterials.filter(niveauFilter);
     activeMaterials=activeMaterials.filter(searchFilter);
     makeMaterialList();
+    updateArchiveInfo();
 }
 
 function searchFilter(mat)
@@ -166,4 +189,13 @@ function niveauFilter(mat)
     });
     // if all values of the filter has matched with a value from student, return true
     return (matches == matchesNeeded ?  true: false);
+}
+
+function updateArchiveInfo()
+{
+    let materialAmount=activeMaterials.length;
+    if(materialAmount==1)
+    {    document.querySelector("#arkiv_materialeantal").textContent="Viser "+materialAmount +" materiale"; } else {
+        document.querySelector("#arkiv_materialeantal").textContent="Viser "+materialAmount +" materialer";
+    }
 }

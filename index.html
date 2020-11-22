@@ -36,7 +36,7 @@
      
     </section>
     <section id="arkivBeskrivelse">
-      <p>Arkiv for læringsmateriale om tegneserier til undervisningbrug. Kender du til materiale vi ikke har med på listen, så kontakt os gerne på:  <a href="mailto:info@dansktegneserieraad.dk">info@dansktegneserieraad.dk</a>. </p>
+      <p>Arkiv for læringsmateriale om tegneserier til undervisningbrug.</br> Kender du til materiale vi ikke har med på listen, så kontakt os gerne på:  <a href="mailto:info@dansktegneserieraad.dk">info@dansktegneserieraad.dk</a>. </p>
     </section>
 <div id="arkiv">
   <aside id="kategorier">
@@ -83,6 +83,7 @@
       <div>
         <input type="checkbox" id="niveau_udskoling" name="niveau_udskoling" value="Udskoling">
         <label for="niveau_udskoling">Udskoling</label>
+      </div>
       <div>
         <input type="checkbox" id="niveau_gymnasie" name="niveau_gymnasie" value="Gymnasie">
         <label for="niveau_gymnasie">Gymnasie</label>
@@ -90,19 +91,19 @@
     </div>
     <img class="arkiv_artwork" src="https://dansktegneserieraad.dk/wp-content/uploads/2019/02/illuforside-768x1366.png" alt=" Dansk Tegneserieråd artwork">
   </aside>
-
   <main>
-
+    <p id="arkiv_materialeantal">Viser xx materialer</p>
+    <section id="arkiv_liste"></section>
   </main>
 </div>
 
 
     <template class="temp_materiale">
       <article class="materiale">
-        <h2 class="materiale_titel"></h2>
-        <p class="materiale_beskrivelse"></p>
-        <a class="materiale_link" href=""></a>
-        <div class="materiale_fagliste"></div>
+          <h2 class="materiale_titel"></h2>
+          <p class="materiale_beskrivelse"></p>
+          <div class="materiale_fagliste"></div>
+        <a class="materiale_link" href="" target="_blank"><i class="fas fa-external-link-square-alt"></i></a>
       </article>
     </template>
     <template class="temp_materiale_fag">
@@ -113,7 +114,7 @@
     <script src="archive.js"></script>
   </body>
   <footer>
-    <div>
+    <div class="footer_content">
       <h3>Kontakt</h3>
       <p>Dansk Tegneserieråd</p>
       <p>Kong Georgsvej 12, 2. sal,</p>
