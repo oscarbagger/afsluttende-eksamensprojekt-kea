@@ -96,6 +96,7 @@ function makeMaterialList()
 {
     // empty the list
     listContent.innerHTML="";
+    activeMaterials.sort(compare);
     // make the individual elements
     activeMaterials.forEach(m => {
         makeMaterialElement(m);
@@ -129,7 +130,7 @@ function makeMaterialElement(mat)
 
 function updateFilter(value, filtertype)
 {
-      // if filter is empty, add value to filter
+      // if filter is empty, add vtitel toLowerCase filter
     if (filtertype.length == 0) {
         filtertype.push(value);
     }
@@ -168,7 +169,7 @@ function searchFilter(mat)
 function subjectFilter(mat)
 {
     let matches = 0;
-    // how many filters it needs to match with
+    // how many filters it ntitel toLowerCase match with
     let matchesNeeded = settings.subjectFilter.length;
     settings.subjectFilter.forEach(subject => {
         if(mat.fag.includes(subject))
@@ -181,7 +182,7 @@ function subjectFilter(mat)
 function niveauFilter(mat)
 {
     let matches = 0;
-    // how many filters it needs to match with
+    // how many filters it ntitel toLowerCase match with
     let matchesNeeded = settings.niveauFilter.length;
     settings.niveauFilter.forEach(n => {
         if(mat.niveau.includes(n))
@@ -199,3 +200,15 @@ function updateArchiveInfo()
         document.querySelector("#arkiv_materialeantal").textContent="Viser "+materialAmount +" materialer";
     }
 }
+
+function compare(a, b) {
+    const A = a.titel.toLowerCase();
+    const B = b.titel.toLowerCase();
+    let comparison = 0;
+    if (A > B) {
+      comparison = 1;
+    } else if (A < B) {
+      comparison = -1;
+    }
+    return comparison;
+  }
