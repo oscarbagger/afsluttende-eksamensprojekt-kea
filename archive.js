@@ -6,23 +6,31 @@ let materialData=[];
 let materials=[];
 let activeMaterials=[];
 
-let uniqueSubjects=[];
-
 // text in the searchbar
 let searchInput = "";
 
 // templates
 const tempMat=document.querySelector(".temp_materiale");
 const tempSubject=document.querySelector(".temp_materiale_fag");
-const filterSubjectButtons=document.querySelectorAll(".kategori_fag div input");
-const filterNiveauButtons=document.querySelectorAll(".kategori_niveau div input");
+const tempFilterBox=document.querySelector(".temp_filter_box");
+const filterSubject=document.querySelector("#filter_fag");
+const filterNiveau=document.querySelector("#filter_niveau");
 const searchBar=document.querySelector("#searchBar input");
+const buttonPrev=document.querySelector("#forrige_side");
+const buttonNext=document.querySelector("#næste_side");
 
 const settings = {
     subjectFilter: [],
     niveauFilter: [],
     sortBy: null,
     sortDir: "asc",
+    currentPage:1,
+    perPage: 10,
+  };
+
+  const materialListInfo = {
+      uniqueSubjects: [],
+      uniqueNiveaus: [],
   };
 
 const materialeObj= {
@@ -36,23 +44,6 @@ const materialeObj= {
 function start()
 {
     fetchJson();
-
-    filterSubjectButtons.forEach((button) => {
-        button.addEventListener("click", function () {
-          updateFilter(this.value, settings.subjectFilter);
-          updateMaterialList();
-        });
-      });
-    filterNiveauButtons.forEach((button) => {
-        button.addEventListener("click", function () {
-          updateFilter(this.value, settings.niveauFilter);
-          updateMaterialList();
-        });
-      });
-    searchBar.addEventListener("input", function () {
-        searchInput = searchBar.value.toLowerCase();
-        updateMaterialList();
-      });
 }
 
 async function fetchJson() 
@@ -67,7 +58,21 @@ function prepareObjects(jsonData) {
     console.log(materials);
     activeMaterials=materials;
     makeMaterialList();
-    generateMaterialInfo();
+    generateActiveMaterialInfo();
+    searchBar.addEventListener("input",  ()=> {
+        searchInput = searchBar.value.toLowerCase();
+        updateMaterialList();
+      });
+    buttonPrev.addEventListener("click", ()=> {
+        settings.currentPage--;
+        makeMaterialList();
+        updatePageButtons();
+    });
+    buttonNext.addEventListener("click", ()=> {
+        settings.currentPage++;
+        makeMaterialList();
+        updatePageButtons();
+    });
   }
 
 function makeObject(jsonObject) {
@@ -80,28 +85,76 @@ function makeObject(jsonObject) {
     return mat;
 }
 
-function generateMaterialInfo()
+function generateActiveMaterialInfo()
 {
+    materialListInfo.uniqueNiveaus=[];
+    materialListInfo.uniqueSubjects=[];
     // get all unique subjects
     activeMaterials.forEach(mat=> {
         mat.fag.forEach(f => {
-            if(!uniqueSubjects.includes(f))
-            {uniqueSubjects.push(f);}
+            if(!materialListInfo.uniqueSubjects.includes(f))
+            {materialListInfo.uniqueSubjects.push(f);}
         });
     });
-    console.log(uniqueSubjects);
+    // get all unique niveaus
+    activeMaterials.forEach(mat=> {
+        mat.niveau.forEach(f => {
+            if(!materialListInfo.uniqueNiveaus.includes(f))
+            {materialListInfo.uniqueNiveaus.push(f);}
+        });
+    });
+    // sort the lists
+    materialListInfo.uniqueSubjects.sort();
+    // needs custom sorting...
+    materialListInfo.uniqueNiveaus.sort();
 }
 
 function makeMaterialList()
 {
     // empty the list
     listContent.innerHTML="";
-    activeMaterials.sort(compare);
+    activeMaterials.sort(compareSorting);
     // make the individual elements
-    activeMaterials.forEach(m => {
-        makeMaterialElement(m);
-    });
+    for (let i=(settings.currentPage-1)*settings.perPage; i<settings.perPage*settings.currentPage;i++)
+    {
+        // stop making more elements when reached end of the list
+        if( i>activeMaterials.length-1)
+        {
+            break;
+        }
+        makeMaterialElement(activeMaterials[i]);
+    }
+    generateActiveMaterialInfo();
     updateArchiveInfo();
+    makeFilterLists();
+}
+
+function makeFilterLists()
+{
+    filterSubject.innerHTML="";
+    filterNiveau.innerHTML="";
+    // make filter for every unique subject filter
+    materialListInfo.uniqueSubjects.forEach(s => {
+        let materialCount=0;
+        activeMaterials.forEach(m => {
+            if (m.fag.includes(s))
+            {
+                materialCount++;
+            }
+        });
+        makeFilter(s, materialCount,settings.subjectFilter,filterSubject);
+    });
+    // make filter for every unique niveau filter
+    materialListInfo.uniqueNiveaus.forEach(s => {
+        let materialCount=0;
+        activeMaterials.forEach(m => {
+            if (m.niveau.includes(s))
+            {
+                materialCount++;
+            }
+        });
+        makeFilter(s,materialCount,settings.niveauFilter,filterNiveau);
+    }); 
 }
 
 function makeMaterialElement(mat)
@@ -128,9 +181,34 @@ function makeMaterialElement(mat)
     listContent.appendChild(clone);
 }
 
+function makeFilter(f, matCount, settingFilterType,parentObj)
+{   
+
+     // clone template
+    let clone=tempFilterBox.cloneNode(true).content;
+    //
+    let filterInput=clone.querySelector("input");
+    clone.querySelector("label").htmlFor=f;
+    clone.querySelector("label").textContent=f;
+    clone.querySelector("p").textContent=matCount;
+    filterInput.id=f;
+    filterInput.name=f;
+    filterInput.value=f;
+    // filter active - check
+    if ( settingFilterType.includes(f))
+    {
+        filterInput.checked=true;
+    }
+    filterInput.addEventListener("click", ()=> {
+        updateFilter(f, settingFilterType);
+        updateMaterialList();
+    });
+    parentObj.appendChild(clone);
+}
+
 function updateFilter(value, filtertype)
 {
-      // if filter is empty, add vtitel toLowerCase filter
+      // if filter is empty, add titel filter
     if (filtertype.length == 0) {
         filtertype.push(value);
     }
@@ -155,7 +233,6 @@ function updateMaterialList()
     activeMaterials=activeMaterials.filter(niveauFilter);
     activeMaterials=activeMaterials.filter(searchFilter);
     makeMaterialList();
-    updateArchiveInfo();
 }
 
 function searchFilter(mat)
@@ -194,14 +271,32 @@ function niveauFilter(mat)
 
 function updateArchiveInfo()
 {
-    let materialAmount=activeMaterials.length;
-    if(materialAmount==1)
-    {    document.querySelector("#arkiv_materialeantal").textContent="Viser "+materialAmount +" materiale"; } else {
-        document.querySelector("#arkiv_materialeantal").textContent="Viser "+materialAmount +" materialer";
-    }
+    let activematerialAmount=activeMaterials.length;
+    let shownMaterialAmount=document.querySelectorAll(".materiale").length;
+    let highNumber=(settings.currentPage-1)*settings.perPage+shownMaterialAmount;
+    let lowNumber=highNumber-shownMaterialAmount+1;
+    document.querySelector("#arkiv_materialeantal").textContent="Viser "+lowNumber+"-"+highNumber+" af "+activematerialAmount+" materialer";
 }
 
-function compare(a, b) {
+function updatePageButtons()
+{
+  let lastPage=Math.ceil(activeMaterials.length/settings.perPage);
+  console.log(lastPage);
+  if(settings.currentPage>1)
+  {
+      buttonPrev.style.display="inline-block";
+  } else {
+      buttonPrev.style.display="none";
+  }
+  if (settings.currentPage<lastPage)
+  {
+      buttonNext.style.display="inline-block";
+  } else {
+      buttonNext.style.display="none";
+  }
+}
+
+function compareSorting(a, b) {
     const A = a.titel.toLowerCase();
     const B = b.titel.toLowerCase();
     let comparison = 0;

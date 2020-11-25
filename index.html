@@ -11,6 +11,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#2d89ef">
+<meta name="theme-color" content="#ffffff">
     <title>Læringsmateriale</title>
   </head>
   <body>
@@ -36,57 +43,59 @@
      
     </section>
     <section id="arkivBeskrivelse">
-      <p>Arkiv for læringsmateriale om tegneserier til undervisningbrug.</br> Kender du til materiale vi ikke har med på listen, så kontakt os gerne på:  <a href="mailto:info@dansktegneserieraad.dk">info@dansktegneserieraad.dk</a>. </p>
+      <p>Arkiv for læringsmateriale om tegneserier til både analyser og fremstilling. </br> Vi har samlet materialer til undervisningbrug fra folkeskole til gymnasieniveau. </br> Kender du til materiale vi ikke har med på listen, så kontakt os gerne på:  <a href="mailto:info@dansktegneserieraad.dk">info@dansktegneserieraad.dk</a>. </p>
     </section>
 <div id="arkiv">
   <aside id="kategorier">
-    <div id="searchBar">
-      <input type="text" placeholder="Søg" />
-    </div>
-    <h2>Fag</h2>
-    <div class="kategori_fag">
-      <div class="materiale_fag">
-        <input type="checkbox" id="fag_billedkunst" name="fag_billedkunst" value="Billedkunst">
-        <label for="fag_billedkunst">Billedkunst</label>
+    <div>
+      <div id="searchBar">
+        <input type="text" placeholder="Søg" />
       </div>
-      <div class="materiale_fag">
-        <input type="checkbox" id="fag_dansk" name="fag_dansk" value="Dansk">
-        <label for="fag_dansk">Dansk</label>
+      <h2>Fag</h2>
+      <div class="filter_kategori" id="filter_fag">
+        <div class="filter_box">
+          <input type="checkbox" id="fag_billedkunst" name="fag_billedkunst" value="Billedkunst">
+          <label for="fag_billedkunst">Billedkunst</label>
+        </div>
+        <div class="filter_box">
+          <input type="checkbox" id="fag_dansk" name="fag_dansk" value="Dansk">
+          <label for="fag_dansk">Dansk</label>
+        </div>
+        <div class="filter_box">
+          <input type="checkbox" id="fag_engelsk" name="fag_engelsk" value="Engelsk">
+          <label for="fag_engelsk">Engelsk</label>
+        </div>
+        <div class="filter_box">
+          <input type="checkbox" id="fag_historie" name="fag_historie" value="Historie">
+          <label for="fag_historie">Historie</label>
+        </div>
+        <div class="filter_box">
+          <input type="checkbox" id="fag_religion" name="fag_religion" value="Religion">
+          <label for="fag_religion">Religion</label>
+        </div>
+        <div class="filter_box">
+          <input type="checkbox" id="fag_tysk" name="fag_tysk" value="Tysk">
+          <label for="fag_tysk">Tysk</label>
+        </div>
       </div>
-      <div class="materiale_fag">
-        <input type="checkbox" id="fag_engelsk" name="fag_engelsk" value="Engelsk">
-        <label for="fag_engelsk">Engelsk</label>
-      </div>
-      <div class="materiale_fag">
-        <input type="checkbox" id="fag_historie" name="fag_historie" value="Historie">
-        <label for="fag_historie">Historie</label>
-      </div>
-      <div class="materiale_fag">
-        <input type="checkbox" id="fag_religion" name="fag_religion" value="Religion">
-        <label for="fag_religion">Religion</label>
-      </div>
-      <div class="materiale_fag">
-        <input type="checkbox" id="fag_tysk" name="fag_tysk" value="Tysk">
-        <label for="fag_tysk">Tysk</label>
-      </div>
-    </div>
-    <h2>Niveau</h2>
-    <div class="kategori_niveau">
-      <div>
-        <input type="checkbox" id="niveau_indskoling" name="niveau_indskoling" value="Indskoling">
-        <label for="niveau_indskoling">Indskoling</label>
-      </div>
-      <div>
-        <input type="checkbox" id="niveau_mellemtrin" name="niveau_mellemtrin" value="Mellemtrin">
-        <label for="niveau_mellemtrin">Mellemtrin</label>
-      </div>
-      <div>
-        <input type="checkbox" id="niveau_udskoling" name="niveau_udskoling" value="Udskoling">
-        <label for="niveau_udskoling">Udskoling</label>
-      </div>
-      <div>
-        <input type="checkbox" id="niveau_gymnasie" name="niveau_gymnasie" value="Gymnasie">
-        <label for="niveau_gymnasie">Gymnasie</label>
+      <h2>Niveau</h2>
+      <div class="filter_kategori" id="filter_niveau">
+        <div class="filter_box">
+          <input type="checkbox" id="niveau_indskoling" name="niveau_indskoling" value="Indskoling">
+          <label for="niveau_indskoling">Indskoling</label>
+        </div>
+        <div class="filter_box">
+          <input type="checkbox" id="niveau_mellemtrin" name="niveau_mellemtrin" value="Mellemtrin">
+          <label for="niveau_mellemtrin">Mellemtrin</label>
+        </div>
+        <div class="filter_box">
+          <input type="checkbox" id="niveau_udskoling" name="niveau_udskoling" value="Udskoling">
+          <label for="niveau_udskoling">Udskoling</label>
+        </div>
+        <div class="filter_box">
+          <input type="checkbox" id="niveau_gymnasie" name="niveau_gymnasie" value="Gymnasie">
+          <label for="niveau_gymnasie">Gymnasie</label>
+        </div>
       </div>
     </div>
     <div>
@@ -97,19 +106,34 @@
     <p id="arkiv_materialeantal">Viser xx materialer</p>
     <section id="arkiv_liste"></section>
   </main>
+  <div id="pageButtons">
+    <input type="button" id="forrige_side" name="forrige_side" value="Forrige side">
+    <input type="button" id="næste_side" name="næste_side" value="Næste side">
+  </div>
 </div>
 
 
     <template class="temp_materiale">
       <article class="materiale">
-          <h2 class="materiale_titel"></h2>
-          <p class="materiale_beskrivelse"></p>
-          <div class="materiale_fagliste"></div>
-        <a class="materiale_link" href="" target="_blank"><i class="fas fa-external-link-square-alt"></i></a>
+        <a class="materiale_link" href="" target="_blank">
+          <div>
+            <h2 class="materiale_titel"></h2>
+            <p class="materiale_beskrivelse"></p>
+            <div class="materiale_fagliste"></div>
+          <i class="fas fa-external-link-square-alt"></i>
+        </div>
+        </a>
       </article>
     </template>
     <template class="temp_materiale_fag">
       <div class="materiale_fag">
+        <p></p>
+      </div>
+    </template>
+    <template class="temp_filter_box">
+      <div class="filter_box">
+        <input type="checkbox" id="" name="" value="">
+        <label for=""></label>
         <p></p>
       </div>
     </template>
