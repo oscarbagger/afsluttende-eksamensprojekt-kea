@@ -46,7 +46,6 @@ input[type="button"] {
 input:hover,
 label:hover {
   cursor: pointer;
-  color: #e6007e;
 }
 
 #logo {
@@ -88,7 +87,7 @@ nav a:hover {
 
 #arkiv {
   background-color: #f5f5f5;
-  margin-bottom: 40px;
+  margin-bottom: 10px;
 }
 
 #arkiv_materialeantal {
@@ -117,19 +116,34 @@ nav a:hover {
   padding-bottom: 10px;
 }
 
-.filter_box {
+.filter_box div {
   padding: 2px 5px 2px 5px;
   margin: 5px;
-  border: 1px solid #333;
+  border: 1px solid #009fe3;
   border-radius: 5px;
   text-align: left;
-  /* width: fit-content; */
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 
+.filter_box div:hover {
+  cursor: pointer;
+  border: 1px solid #e6007e;
+  color: #e6007e;
+}
+
+.filter_box div:hover > p {
+  color: #e6007e;
+}
+
+.fa-check-square {
+  display: none;
+  color: #009fe3;
+}
+
 .filter_box p {
+  user-select: none;
   text-align: right;
 }
 
@@ -141,7 +155,11 @@ nav a:hover {
 }
 
 .filter_kategori {
-  margin: 0px 20px 0px 20px;
+  margin: 0px 20px 20px 20px;
+}
+
+aside h2 {
+  padding-top: 10px;
 }
 
 .materiale {
@@ -168,7 +186,7 @@ nav a:hover {
 .materiale_fag {
   padding: 2px 5px 2px 5px;
   margin: 5px;
-  border: 1px solid #333;
+  border: 1px solid #009fe3;
   border-radius: 5px;
   text-align: center;
   width: fit-content;
@@ -195,13 +213,43 @@ aside {
   display: none;
 }
 
-#forrige_side {
-  display: none;
+#pageButtons {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+#pageButtons div {
+  padding: 0px 20px 20px 20px;
+  user-select: none;
+  font-size: 1.1em;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  color: #e6007e;
+}
+
+#pageButtons div p {
+  padding: 4px;
+}
+
+#pageButtons div:hover {
+  cursor: pointer;
+  color: #e6007e;
+}
+
+#pageButtons div:hover > p {
+  color: #e6007e;
+}
+#pageButtons .fas {
+  font-size: 28px;
 }
 
 footer {
   text-align: left;
   background-color: #009fe3;
+  box-sizing: border-box;
   padding: 30px;
 }
 
@@ -262,6 +310,17 @@ footer a {
   }
   .materiale:hover .fa-external-link-square-alt {
     font-size: 50px;
+  }
+
+  #pageButtons {
+    max-width: 80%;
+    margin-left: auto;
+  }
+  #pageButtons div {
+    padding: 0px 0px 20px 0px;
+  }
+  footer {
+    padding: 30px 0px 30px 0px;
   }
   .footer_content {
     max-width: 80%;
