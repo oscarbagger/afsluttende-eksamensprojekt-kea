@@ -229,6 +229,7 @@ function makeFilter(f, matCount, settingFilterType, parentObj) {
   if (settingFilterType.includes(f)) {
     filterCheck.style.display = "inline-block";
     filterUnCheck.style.display = "none";
+    clone.querySelector(".filter_count").textContent = "";
   }
   filterDiv.addEventListener("click", () => {
     // make sure all checkmarks are not checked
@@ -256,8 +257,14 @@ function makeFilter(f, matCount, settingFilterType, parentObj) {
     }
     updateFilter(f, settingFilterType);
     updateMaterialList();
+    makeFilterLists();
   });
-  parentObj.appendChild(clone);
+  if (
+    settingFilterType.includes(f) ||
+    (settingFilterType.length == 0 && matCount > 0)
+  ) {
+    parentObj.appendChild(clone);
+  }
 }
 
 function updateFilterCounters() {}
