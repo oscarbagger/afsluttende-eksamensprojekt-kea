@@ -41,8 +41,11 @@ const materialeObj = {
   titel: "",
   beskrivelse: "",
   link: "",
+  forfatter: "",
+  udgiver: "",
   fag: [],
   niveau: [],
+  type: "",
 };
 
 function start() {
@@ -62,7 +65,7 @@ function prepareObjects(jsonData) {
   generateMaterialInfo();
   makeFilterLists();
   makeMaterialList();
-  updatePageButtons();
+  //updatePageButtons();
   addButtonInputs();
 }
 
@@ -71,6 +74,7 @@ function addButtonInputs() {
     searchInput = searchBar.value.toLowerCase();
     updateMaterialList();
   });
+  /*
   buttonPrev.addEventListener("click", () => {
     settings.currentPage--;
     makeMaterialList();
@@ -86,16 +90,19 @@ function addButtonInputs() {
     document
       .querySelector("#arkiv_materialeantal")
       .scrollIntoView({ behavior: "smooth", block: "start" });
-  });
+  }); */
 }
 
 function makeObject(jsonObject) {
   let mat = Object.create(materialeObj);
   mat.titel = jsonObject.title.rendered;
   mat.beskrivelse = jsonObject.beskrivelse;
+  mat.forfatter = jsonObject.forfatter;
+  mat.udgiver = jsonObject.udgiver;
   mat.link = jsonObject.link;
   mat.fag = jsonObject.fag;
   mat.niveau = jsonObject.niveau;
+  mat.type = jsonObject.materialetype;
   return mat;
 }
 
@@ -154,7 +161,12 @@ function makeMaterialList() {
   listContent.innerHTML = "";
   activeMaterials.sort(compareSorting);
   // make the individual elements
-  for (
+  activeMaterials.forEach((mat) => {
+    makeMaterialElement(mat);
+  });
+  updateArchiveInfo();
+
+  /*  for (
     let i = (settings.currentPage - 1) * settings.perPage;
     i < settings.perPage * settings.currentPage;
     i++
@@ -162,10 +174,9 @@ function makeMaterialList() {
     // stop making more elements when reached end of the list
     if (i > activeMaterials.length - 1) {
       break;
-    }
+    }   
     makeMaterialElement(activeMaterials[i]);
-  }
-  updateArchiveInfo();
+  }*/
 }
 
 function makeFilterLists() {
@@ -213,6 +224,9 @@ function makeMaterialElement(mat) {
     cloneSubject.querySelector("p").textContent = f;
     clone.querySelector(".materiale_fagliste").appendChild(cloneSubject);
   });
+  let cloneSubject = tempSubject.cloneNode(true).content;
+  cloneSubject.querySelector("p").textContent = mat.type;
+  clone.querySelector(".materiale_fagliste").appendChild(cloneSubject);
   listContent.appendChild(clone);
 }
 
@@ -307,6 +321,7 @@ function updateMaterialList() {
   activeMaterials = activeMaterials.filter(subjectFilter);
   activeMaterials = activeMaterials.filter(niveauFilter);
   activeMaterials = activeMaterials.filter(searchFilter);
+  settings.currentPage = 1;
   makeMaterialList();
 }
 
@@ -345,6 +360,15 @@ function niveauFilter(mat) {
 
 function updateArchiveInfo() {
   let activematerialAmount = activeMaterials.length;
+  if (activematerialAmount != 1) {
+    document.querySelector("#arkiv_materialeantal").textContent =
+      "Viser " + activematerialAmount + " materialer";
+  } else {
+    document.querySelector("#arkiv_materialeantal").textContent =
+      "Viser " + activematerialAmount + " materiale";
+  }
+
+  /* 
   let shownMaterialAmount = document.querySelectorAll(".materiale").length;
   let highNumber =
     (settings.currentPage - 1) * settings.perPage + shownMaterialAmount;
@@ -356,7 +380,7 @@ function updateArchiveInfo() {
     highNumber +
     " af " +
     activematerialAmount +
-    " materialer";
+    " materialer"; */
 }
 
 function updatePageButtons() {

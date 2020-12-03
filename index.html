@@ -13,11 +13,11 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" type="text/css" href="style.css" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="manifest" href="/site.webmanifest" />
-    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+    <link rel="manifest" href="site.webmanifest" />
+    <link rel="mask-icon" href="safari-pinned-tab.svg" color="#5bbad5" />
     <meta name="msapplication-TileColor" content="#2d89ef" />
     <meta name="theme-color" content="#ffffff" />
     <title>Læringsmateriale</title>
@@ -33,12 +33,15 @@
         </a>
       </div>
       <nav>
-        <a href="">HJEM</a>
-        <a href="">BLIV MEDLEM</a>
-        <a href="">NYHEDER</a>
-        <a href="">UNDERVISNING</a>
-        <a href="">HVIDBOG</a>
-        <a href="">KONTAKT OG INFO</a>
+        <div id="nav_closed"><i class="fas fa-bars"></i></div>
+        <div id="nav_open">
+          <a href="">HJEM</a>
+          <a href="">BLIV MEDLEM</a>
+          <a href="">NYHEDER</a>
+          <a href="">UNDERVISNING</a>
+          <a href="">HVIDBOG</a>
+          <a href="">KONTAKT OG INFO</a>
+        </div>
       </nav>
     </header>
     <section id="topSection">
@@ -81,7 +84,7 @@
         <section id="arkiv_liste"></section>
       </main>
     </section>
-    <div id="pageButtons">
+    <!-- <div id="pageButtons">
       <div id="forrige_side">
         <i class="fas fa-arrow-alt-circle-left"></i>
         <p>Forrige side</p>
@@ -90,15 +93,22 @@
         <p>Næste side</p>
         <i class="fas fa-arrow-alt-circle-right"></i>
       </div>
-    </div>
+    </div> -->
     <template class="temp_materiale">
       <article class="materiale">
         <a class="materiale_link" href="" target="_blank">
-          <div>
-            <h2 class="materiale_titel"></h2>
-            <p class="materiale_beskrivelse"></p>
-            <div class="materiale_fagliste"></div>
-            <i class="fas fa-external-link-square-alt"></i>
+          <div class="materiale_divider">
+            <div>
+              <h2 class="materiale_titel"></h2>
+              <p class="materiale_beskrivelse"></p>
+              <div class="materiale_fagliste"></div>
+            </div>
+            <div>
+              <div class="materiale_linkicon">
+                <p class="materiale_linktext">ÅBN LINK</p>
+                <i class="fas fa-external-link-square-alt"></i>
+              </div>
+            </div>
           </div>
         </a>
       </article>
