@@ -3,6 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Arkiv for læringsmateriale om tegneserier til både analyser og
+    fremstilling. Materialer til undervisningbrug fra
+    folkeskole til gymnasieniveau."
+    />
     <script
       src="https://kit.fontawesome.com/c0ab951e8e.js"
       crossorigin="anonymous"
@@ -25,22 +31,19 @@
   <body>
     <header>
       <div id="logo">
-        <a href="">
-          <img
-            src="https://dansktegneserieraad.dk/wp-content/uploads/2019/02/cropped-dansk-tegneserieraad-logo-4.png"
-            alt="Dansk Tegneserieråd"
-          />
+        <a href="https://dansktegneserieraad.dk/">
+          <img src="logo.png" alt="Dansk Tegneserieråd" />
         </a>
       </div>
       <nav>
         <div id="nav_closed"><i class="fas fa-bars"></i></div>
         <div id="nav_open">
-          <a href="">HJEM</a>
-          <a href="">BLIV MEDLEM</a>
-          <a href="">NYHEDER</a>
-          <a href="">UNDERVISNING</a>
-          <a href="">HVIDBOG</a>
-          <a href="">KONTAKT OG INFO</a>
+          <a href="https://dansktegneserieraad.dk/">HJEM</a>
+          <a href="https://dansktegneserieraad.dk/">BLIV MEDLEM</a>
+          <a href="https://dansktegneserieraad.dk/">NYHEDER</a>
+          <a href="https://dansktegneserieraad.dk/">UNDERVISNING</a>
+          <a href="https://dansktegneserieraad.dk/">HVIDBOG</a>
+          <a href="https://dansktegneserieraad.dk/">KONTAKT OG INFO</a>
         </div>
       </nav>
     </header>
@@ -60,11 +63,17 @@
         >
       </p>
     </section>
-    <section id="arkiv">
+    <main id="arkiv">
       <aside id="kategorier">
         <div>
           <div id="searchBar">
-            <input type="text" placeholder="Søg" />
+            <input
+              type="text"
+              name="searchInput"
+              placeholder="Søg i arkivet"
+              id="searchInput"
+            />
+            <label for="searchInput"></label>
           </div>
           <h2>Fag</h2>
           <div class="filter_kategori" id="filter_fag"></div>
@@ -74,16 +83,16 @@
         <div>
           <img
             class="arkiv_artwork"
-            src="https://dansktegneserieraad.dk/wp-content/uploads/2019/02/illuforside-768x1366.png"
-            alt=" Dansk Tegneserieråd artwork"
+            src="illustration.webp"
+            alt=" Dansk Tegneserieråd illustration"
           />
         </div>
       </aside>
-      <main>
+      <section>
         <p id="arkiv_materialeantal">Viser xx materialer</p>
         <section id="arkiv_liste"></section>
-      </main>
-    </section>
+      </section>
+    </main>
     <!-- <div id="pageButtons">
       <div id="forrige_side">
         <i class="fas fa-arrow-alt-circle-left"></i>
@@ -96,10 +105,11 @@
     </div> -->
     <template class="temp_materiale">
       <article class="materiale">
-        <a class="materiale_link" href="" target="_blank">
+        <a class="materiale_link" href="" target="_blank" rel="noopener">
           <div class="materiale_divider">
             <div>
               <h2 class="materiale_titel"></h2>
+              <p class="materiale_info"></p>
               <p class="materiale_beskrivelse"></p>
               <div class="materiale_fagliste"></div>
             </div>

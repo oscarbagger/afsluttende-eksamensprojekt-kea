@@ -43,6 +43,7 @@ const materialeObj = {
   link: "",
   forfatter: "",
   udgiver: "",
+  udgivelsestid: "",
   fag: [],
   niveau: [],
   type: "",
@@ -99,6 +100,7 @@ function makeObject(jsonObject) {
   mat.beskrivelse = jsonObject.beskrivelse;
   mat.forfatter = jsonObject.forfatter;
   mat.udgiver = jsonObject.udgiver;
+  mat.udgivelsestid = jsonObject.udgivelsestid;
   mat.link = jsonObject.link;
   mat.fag = jsonObject.fag;
   mat.niveau = jsonObject.niveau;
@@ -209,6 +211,8 @@ function makeMaterialElement(mat) {
   let clone = tempMat.cloneNode(true).content;
   // put the material info into the clone
   clone.querySelector(".materiale_titel").textContent = mat.titel;
+  clone.querySelector(".materiale_info").textContent =
+    mat.forfatter + ", " + mat.udgiver + " " + mat.udgivelsestid;
   clone.querySelector(".materiale_beskrivelse").textContent = mat.beskrivelse;
   clone.querySelector(".materiale_link").href = mat.link;
   // sort materials subjects alphabetically
@@ -280,8 +284,6 @@ function makeFilter(f, matCount, settingFilterType, parentObj) {
     parentObj.appendChild(clone);
   }
 }
-
-function updateFilterCounters() {}
 
 function updateFilter(value, filtertype) {
   // if already active, remove it

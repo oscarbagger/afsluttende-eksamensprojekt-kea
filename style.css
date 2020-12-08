@@ -123,7 +123,6 @@ nav a:hover {
 .filter_box div {
   padding: 2px 5px 2px 5px;
   margin: 5px;
-  border: 1px solid #009fe3;
   border-radius: 5px;
   text-align: left;
   display: flex;
@@ -133,7 +132,6 @@ nav a:hover {
 
 .filter_box div:hover {
   cursor: pointer;
-  border: 1px solid #e6007e;
   color: #e6007e;
 }
 
@@ -168,7 +166,6 @@ aside h2 {
 
 .materiale {
   margin: 10px 10px 10px 10px;
-  /* border: 2px solid #333; */
   padding: 15px;
   background-color: white;
   position: relative;
@@ -177,6 +174,12 @@ aside h2 {
 
 .materiale_titel {
   padding-bottom: 8px;
+}
+
+.materiale_info {
+  font-size: 0.9em;
+  padding: 6px;
+  font-style: italic;
 }
 
 .materiale p {
@@ -198,8 +201,6 @@ aside h2 {
 .materiale_fag {
   padding: 2px 5px 2px 5px;
   margin: 5px;
-  /* border: 1px solid #009fe3; 
-  border-radius: 5px; */
   font-size: 0.8em;
   text-align: center;
   width: fit-content;
@@ -216,6 +217,11 @@ aside h2 {
   justify-content: flex-end;
   padding-top: 10px;
 }
+
+.materiale_linkicon p {
+  font-weight: 600;
+}
+
 .fa-external-link-square-alt {
   font-size: 24px;
   transition: ease-in 0.2s;
@@ -301,7 +307,6 @@ footer a {
     max-width: 1000px;
     margin-left: auto;
     margin-right: auto;
-    /*  border-right: 2px solid #333; */
   }
   #arkiv_materialeantal {
     top: -20px;
@@ -310,13 +315,7 @@ footer a {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    /* border-top: 2px solid #333; */
   }
-  /* main {
-    border-bottom: 2px solid #333;
-    border-left: 2px solid #333;
-    border-top: 2px solid #333;
-  } */
   .arkiv_artwork {
     display: inline-block;
   }
@@ -336,19 +335,14 @@ footer a {
   }
   .materiale_linkicon {
     justify-content: center;
-    padding-top: 0px;
   }
   .materiale_linktext {
     text-align: right;
   }
   .materiale:hover {
     left: 10px;
-    /* border: 2px solid #e6007e; */
     cursor: pointer;
   }
-  /* .materiale:hover .fa-external-link-square-alt {
-    font-size: 28px;
-  } */
 
   #pageButtons {
     max-width: 80%;
