@@ -7,34 +7,34 @@ let materialData = [];
 let materials = [];
 let activeMaterials = [];
 
-// text in the searchbar
-let searchInput = "";
-
-// templates
+// html elements
 const tempMat = document.querySelector(".temp_materiale");
 const tempSubject = document.querySelector(".temp_materiale_fag");
 const tempFilterBox = document.querySelector(".temp_filter_box");
-const filterSubject = document.querySelector("#filter_fag");
-const filterNiveau = document.querySelector("#filter_niveau");
+const filterSubjectObj = document.querySelector("#filter_fag");
+const filterNiveauObj = document.querySelector("#filter_niveau");
+const filterTypeObj = document.querySelector("#filter_type");
 const filtertypes = document.querySelectorAll(".filter_kategori");
 const searchBar = document.querySelector("#searchBar input");
-const buttonPrev = document.querySelector("#forrige_side");
-const buttonNext = document.querySelector("#næste_side");
+const filterResetButton = document.querySelector("#reset_filter_button");
+let filterButtons = [];
+
+// text in the searchbar
+let searchInput = "";
 
 const settings = {
   subjectFilter: [],
   niveauFilter: [],
+  typeFilter: [],
+  filterList: [],
   sortBy: null,
   sortDir: "asc",
-  currentPage: 1,
-  perPage: 5,
 };
 
 const materialListInfo = {
   uniqueSubjects: [],
   uniqueNiveaus: [],
-  uniqueActiveSubjects: [],
-  uniqueActiveNiveaus: [],
+  uniqueTypes: [],
 };
 
 const materialeObj = {
@@ -61,12 +61,10 @@ async function fetchJson() {
 
 function prepareObjects(jsonData) {
   materials = jsonData.map(makeObject);
-  console.log(materials);
   activeMaterials = materials;
   generateMaterialInfo();
   makeFilterLists();
   makeMaterialList();
-  //updatePageButtons();
   addButtonInputs();
 }
 
@@ -75,23 +73,18 @@ function addButtonInputs() {
     searchInput = searchBar.value.toLowerCase();
     updateMaterialList();
   });
-  /*
-  buttonPrev.addEventListener("click", () => {
-    settings.currentPage--;
-    makeMaterialList();
-    updatePageButtons();
-    document
-      .querySelector("#arkiv_materialeantal")
-      .scrollIntoView({ behavior: "smooth", block: "start" });
+  filterResetButton.addEventListener("click", () => {
+    // empty filters
+    settings.filterList = [];
+    filterButtons.forEach((b) => {
+      // reset checkmarks on all filter buttons
+      let filterCheck = b.querySelector(".fa-check-square");
+      let filterUnCheck = b.querySelector(".fa-square");
+      filterCheck.style.display = "none";
+      filterUnCheck.style.display = "inline-block";
+    });
+    updateMaterialList();
   });
-  buttonNext.addEventListener("click", () => {
-    settings.currentPage++;
-    makeMaterialList();
-    updatePageButtons();
-    document
-      .querySelector("#arkiv_materialeantal")
-      .scrollIntoView({ behavior: "smooth", block: "start" });
-  }); */
 }
 
 function makeObject(jsonObject) {
@@ -108,52 +101,28 @@ function makeObject(jsonObject) {
   return mat;
 }
 
-function generateActiveMaterialInfo() {
-  materialListInfo.uniqueActiveNiveaus = [];
-  materialListInfo.uniqueActiveSubjects = [];
-  // get all unique subjects
-  materials.forEach((mat) => {
-    mat.fag.forEach((f) => {
-      if (!materialListInfo.uniqueSubjects.includes(f)) {
-        materialListInfo.uniqueSubjects.push(f);
-      }
-    });
-  });
-  // get all unique niveaus
-  materials.forEach((mat) => {
-    mat.niveau.forEach((f) => {
-      if (!materialListInfo.uniqueNiveaus.includes(f)) {
-        materialListInfo.uniqueNiveaus.push(f);
-      }
-    });
-  });
-  // sort the lists
-  materialListInfo.uniqueSubjects.sort();
-  // needs custom sorting...
-  materialListInfo.uniqueNiveaus.sort();
-}
-
 function generateMaterialInfo() {
-  materialListInfo.uniqueNiveaus = [];
-  materialListInfo.uniqueSubjects = [];
-  // get all unique subjects
   materials.forEach((mat) => {
+    // get all unique subjects
     mat.fag.forEach((f) => {
       if (!materialListInfo.uniqueSubjects.includes(f)) {
         materialListInfo.uniqueSubjects.push(f);
       }
-    });
-  });
-  // get all unique niveaus
-  materials.forEach((mat) => {
-    mat.niveau.forEach((f) => {
-      if (!materialListInfo.uniqueNiveaus.includes(f)) {
-        materialListInfo.uniqueNiveaus.push(f);
+      // get all unique niveaus
+      mat.niveau.forEach((f) => {
+        if (!materialListInfo.uniqueNiveaus.includes(f)) {
+          materialListInfo.uniqueNiveaus.push(f);
+        }
+      });
+      // get all unique types
+      if (!materialListInfo.uniqueTypes.includes(mat.type[0])) {
+        materialListInfo.uniqueTypes.push(mat.type[0]);
       }
     });
   });
   // sort the lists
   materialListInfo.uniqueSubjects.sort();
+  materialListInfo.uniqueTypes.sort();
   // needs custom sorting...
   materialListInfo.uniqueNiveaus.sort();
 }
@@ -167,23 +136,15 @@ function makeMaterialList() {
     makeMaterialElement(mat);
   });
   updateArchiveInfo();
-
-  /*  for (
-    let i = (settings.currentPage - 1) * settings.perPage;
-    i < settings.perPage * settings.currentPage;
-    i++
-  ) {
-    // stop making more elements when reached end of the list
-    if (i > activeMaterials.length - 1) {
-      break;
-    }   
-    makeMaterialElement(activeMaterials[i]);
-  }*/
+  if (activeMaterials.length == 0) {
+    let emptyText = document.createElement("p");
+    emptyText.textContent = "Ingen materialer fundet";
+    emptyText.classList.add("arkiv_emptyText");
+    listContent.appendChild(emptyText);
+  }
 }
 
 function makeFilterLists() {
-  filterSubject.innerHTML = "";
-  filterNiveau.innerHTML = "";
   // make filter for every unique subject filter
   materialListInfo.uniqueSubjects.forEach((s) => {
     let materialCount = 0;
@@ -192,7 +153,7 @@ function makeFilterLists() {
         materialCount++;
       }
     });
-    makeFilter(s, materialCount, settings.subjectFilter, filterSubject);
+    makeFilter(s, materialCount, filterSubjectObj);
   });
   // make filter for every unique niveau filter
   materialListInfo.uniqueNiveaus.forEach((s) => {
@@ -202,7 +163,17 @@ function makeFilterLists() {
         materialCount++;
       }
     });
-    makeFilter(s, materialCount, settings.niveauFilter, filterNiveau);
+    makeFilter(s, materialCount, filterNiveauObj);
+  });
+  // make filter for every unique type filter
+  materialListInfo.uniqueTypes.forEach((s) => {
+    let materialCount = 0;
+    activeMaterials.forEach((m) => {
+      if (m.type == s) {
+        materialCount++;
+      }
+    });
+    makeFilter(s, materialCount, filterTypeObj);
   });
 }
 
@@ -219,22 +190,22 @@ function makeMaterialElement(mat) {
   mat.fag.sort();
   // make category boxes
   mat.fag.forEach((f) => {
-    let cloneSubject = tempSubject.cloneNode(true).content;
-    cloneSubject.querySelector("p").textContent = f;
-    clone.querySelector(".materiale_fagliste").appendChild(cloneSubject);
+    makeCategoryTag(f, clone);
   });
   mat.niveau.forEach((f) => {
-    let cloneSubject = tempSubject.cloneNode(true).content;
-    cloneSubject.querySelector("p").textContent = f;
-    clone.querySelector(".materiale_fagliste").appendChild(cloneSubject);
+    makeCategoryTag(f, clone);
   });
-  let cloneSubject = tempSubject.cloneNode(true).content;
-  cloneSubject.querySelector("p").textContent = mat.type;
-  clone.querySelector(".materiale_fagliste").appendChild(cloneSubject);
+  makeCategoryTag(mat.type, clone);
   listContent.appendChild(clone);
 }
 
-function makeFilter(f, matCount, settingFilterType, parentObj) {
+function makeCategoryTag(text, parent) {
+  let cloneSubject = tempSubject.cloneNode(true).content;
+  cloneSubject.querySelector("p").textContent = text;
+  parent.querySelector(".materiale_fagliste").appendChild(cloneSubject);
+}
+
+function makeFilter(f, matCount, parentObj) {
   // clone template
   let clone = tempFilterBox.cloneNode(true).content;
   //
@@ -243,29 +214,9 @@ function makeFilter(f, matCount, settingFilterType, parentObj) {
   let filterUnCheck = clone.querySelector(".fa-square");
   clone.querySelector(".filter_name").textContent = f;
   clone.querySelector(".filter_count").textContent = matCount;
-  // filter active - check
-  if (settingFilterType.includes(f)) {
-    filterCheck.style.display = "inline-block";
-    filterUnCheck.style.display = "none";
-    clone.querySelector(".filter_count").textContent = "";
-  }
   filterDiv.addEventListener("click", () => {
-    // make sure all checkmarks are not checked
-    let filterState = filterCheck.style.display;
-    console.log(filterState);
-    let filtercheckMarks = parentObj.querySelectorAll(
-      ".filter_box .fa-check-square"
-    );
-    let filtercheckMarkOutlines = parentObj.querySelectorAll(
-      ".filter_box .fa-square"
-    );
-    filtercheckMarks.forEach((obj) => {
-      obj.style.display = "none";
-    });
-    filtercheckMarkOutlines.forEach((obj) => {
-      obj.style.display = "inline-block";
-    });
     // checkmark
+    let filterState = filterCheck.style.display;
     if (filterState != "inline-block") {
       filterCheck.style.display = "inline-block";
       filterUnCheck.style.display = "none";
@@ -273,91 +224,75 @@ function makeFilter(f, matCount, settingFilterType, parentObj) {
       filterCheck.style.display = "none";
       filterUnCheck.style.display = "inline-block";
     }
-    updateFilter(f, settingFilterType);
+    updateFilter(f);
     updateMaterialList();
-    makeFilterLists();
   });
-  if (
-    settingFilterType.includes(f) ||
-    (settingFilterType.length == 0 && matCount > 0)
-  ) {
-    parentObj.appendChild(clone);
-  }
+  parentObj.appendChild(clone);
+  filterButtons.push(parentObj.lastElementChild);
 }
 
-function updateFilter(value, filtertype) {
-  // if already active, remove it
-  if (filtertype.includes(value)) {
-    // empty the filter
-    filtertype.length = 0;
-  } else {
-    // empty the filter
-    filtertype.length = 0;
-    // add new filter value
-    filtertype.push(value);
-  }
-  console.log(filtertype);
-}
-
-/* 
-function updateFilter(value, filtertype) {
-  // if filter is empty, add titel filter
-  if (filtertype.length == 0) {
-    filtertype.push(value);
+function updateFilter(value) {
+  // if filter is empty, add to filter
+  if (settings.filterList.length == 0) {
+    settings.filterList.push(value);
   }
   // if value is already in filter, remove it
-  else if (filtertype.includes(value)) {
-    let i = filtertype.indexOf(value);
-    filtertype.splice(i, 1);
+  else if (settings.filterList.includes(value)) {
+    let i = settings.filterList.indexOf(value);
+    settings.filterList.splice(i, 1);
   }
   //if value is not in filter then add it
   else {
-    filtertype.push(value);
+    settings.filterList.push(value);
   }
-}  */
+}
 
 function updateMaterialList() {
   // refill list with all materials
   activeMaterials = materials;
   // filter out material from the active list
-  activeMaterials = activeMaterials.filter(subjectFilter);
-  activeMaterials = activeMaterials.filter(niveauFilter);
+  activeMaterials = activeMaterials.filter(filterCheck);
   activeMaterials = activeMaterials.filter(searchFilter);
-  settings.currentPage = 1;
   makeMaterialList();
 }
 
+function filterCheck(mat) {
+  let matches = 0;
+  // how many filters to match with
+  let matchesNeeded = settings.filterList.length;
+  if (matchesNeeded == 0) {
+    return true;
+  }
+  // make a combined list of all the materials filter criteria (type+niveau+subject)
+  let matFilterCriteria = [];
+  matFilterCriteria.push(mat.type[0]);
+  mat.fag.forEach((f) => {
+    matFilterCriteria.push(f);
+  });
+  mat.niveau.forEach((f) => {
+    matFilterCriteria.push(f);
+  });
+  // check if all the criteria matches the filters
+  settings.filterList.forEach((f) => {
+    matFilterCriteria.forEach((c) => {
+      if (f.includes(c)) {
+        matches++;
+      }
+    });
+  });
+  // if all values of the filter has matched with a value in the material, return true
+  return matches == matchesNeeded ? true : false;
+}
+
 function searchFilter(mat) {
-  let searchCriteria = mat.titel.toLowerCase() + mat.beskrivelse.toLowerCase();
+  let searchCriteria =
+    mat.titel.toLowerCase() +
+    mat.beskrivelse.toLowerCase() +
+    mat.forfatter.toLowerCase() +
+    mat.udgiver.toLowerCase();
   if (searchCriteria.includes(searchInput)) {
     return true;
   } else return false;
-}
-
-function subjectFilter(mat) {
-  let matches = 0;
-  // how many filters it ntitel toLowerCase match with
-  let matchesNeeded = settings.subjectFilter.length;
-  settings.subjectFilter.forEach((subject) => {
-    if (mat.fag.includes(subject)) {
-      matches++;
-    }
-  });
-  // if all values of the filter has matched with a value from student, return true
-  return matches == matchesNeeded ? true : false;
-}
-
-function niveauFilter(mat) {
-  let matches = 0;
-  // how many filters it ntitel toLowerCase match with
-  let matchesNeeded = settings.niveauFilter.length;
-  settings.niveauFilter.forEach((n) => {
-    if (mat.niveau.includes(n)) {
-      matches++;
-    }
-  });
-  // if all values of the filter has matched with a value from student, return true
-  return matches == matchesNeeded ? true : false;
 }
 
 function updateArchiveInfo() {
@@ -368,34 +303,6 @@ function updateArchiveInfo() {
   } else {
     document.querySelector("#arkiv_materialeantal").textContent =
       "Viser " + activematerialAmount + " materiale";
-  }
-
-  /* 
-  let shownMaterialAmount = document.querySelectorAll(".materiale").length;
-  let highNumber =
-    (settings.currentPage - 1) * settings.perPage + shownMaterialAmount;
-  let lowNumber = highNumber - shownMaterialAmount + 1;
-  document.querySelector("#arkiv_materialeantal").textContent =
-    "Viser " +
-    lowNumber +
-    "-" +
-    highNumber +
-    " af " +
-    activematerialAmount +
-    " materialer"; */
-}
-
-function updatePageButtons() {
-  let lastPage = Math.ceil(activeMaterials.length / settings.perPage);
-  if (settings.currentPage > 1) {
-    buttonPrev.style.display = "flex";
-  } else {
-    buttonPrev.style.display = "none";
-  }
-  if (settings.currentPage < lastPage) {
-    buttonNext.style.display = "flex";
-  } else {
-    buttonNext.style.display = "none";
   }
 }
 
