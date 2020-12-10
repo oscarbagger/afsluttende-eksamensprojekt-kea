@@ -18,16 +18,14 @@ const filtertypes = document.querySelectorAll(".filter_kategori");
 const searchBar = document.querySelector("#searchBar input");
 const filterResetButton = document.querySelector("#reset_filter_button");
 let filterButtons = [];
+let activeMaterialElements = [];
 
 // text in the searchbar
 let searchInput = "";
 
 const settings = {
-  subjectFilter: [],
-  niveauFilter: [],
-  typeFilter: [],
   filterList: [],
-  sortBy: null,
+  sortBy: "titel",
   sortDir: "asc",
 };
 
@@ -69,6 +67,7 @@ function prepareObjects(jsonData) {
 }
 
 function addButtonInputs() {
+  updateresetButtonState();
   searchBar.addEventListener("input", () => {
     searchInput = searchBar.value.toLowerCase();
     updateMaterialList();
@@ -83,6 +82,7 @@ function addButtonInputs() {
       filterCheck.style.display = "none";
       filterUnCheck.style.display = "inline-block";
     });
+    filterResetButton.style.display = "none";
     updateMaterialList();
   });
 }
@@ -130,7 +130,7 @@ function generateMaterialInfo() {
 function makeMaterialList() {
   // empty the list
   listContent.innerHTML = "";
-  activeMaterials.sort(compareSorting);
+  activeMaterials.sort(dynamicSort(settings.sortBy));
   // make the individual elements
   activeMaterials.forEach((mat) => {
     makeMaterialElement(mat);
@@ -142,6 +142,24 @@ function makeMaterialList() {
     emptyText.classList.add("arkiv_emptyText");
     listContent.appendChild(emptyText);
   }
+}
+
+function updateresetButtonState() {
+  if (settings.filterList.length == 0) {
+    filterResetButton.style.display = "none";
+  } else {
+    filterResetButton.style.display = "inline-block";
+  }
+}
+
+function updateMaterialList() {
+  updateresetButtonState();
+  // refill list with all materials
+  activeMaterials = materials;
+  // filter out material from the active list
+  activeMaterials = activeMaterials.filter(filterCheck);
+  activeMaterials = activeMaterials.filter(searchFilter);
+  makeMaterialList();
 }
 
 function makeFilterLists() {
@@ -197,6 +215,7 @@ function makeMaterialElement(mat) {
   });
   makeCategoryTag(mat.type, clone);
   listContent.appendChild(clone);
+  activeMaterialElements.push(listContent.lastElementChild);
 }
 
 function makeCategoryTag(text, parent) {
@@ -245,15 +264,6 @@ function updateFilter(value) {
   else {
     settings.filterList.push(value);
   }
-}
-
-function updateMaterialList() {
-  // refill list with all materials
-  activeMaterials = materials;
-  // filter out material from the active list
-  activeMaterials = activeMaterials.filter(filterCheck);
-  activeMaterials = activeMaterials.filter(searchFilter);
-  makeMaterialList();
 }
 
 function filterCheck(mat) {
@@ -316,4 +326,19 @@ function compareSorting(a, b) {
     comparison = -1;
   }
   return comparison;
+}
+
+// https://stackoverflow.com/questions/1129216/sort-array-of-objects-by-string-property-value
+function dynamicSort(property) {
+  return function (a, b) {
+    if (typeof a[property] == "boolean") {
+      var result =
+        a[property] > b[property] ? -1 : a[property] < b[property] ? 1 : 0;
+      return result;
+    } else {
+      var result =
+        a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
+      return result;
+    }
+  };
 }
